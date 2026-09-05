@@ -21,7 +21,7 @@ head2.penup()
 head2.goto(100,100)
 head2.direction = "stop"
 
-body = []
+body1 = []
 body2 = []
 score = 0
 high_score = 0
@@ -125,28 +125,40 @@ def move_food():
     )
 while True:
     win.update()
-
-    if head1.distance(food) <15:
-        x = random.randint(-240, 240)
-        y = random.randint(-240, 240)
-        food.goto(x,y)
-        new_body = turtle.Turtle()
+    if head1.distance(food)<15:
+        player1_score=player1_score+food_value
+        move_food
+        new_body=turtle.Turtle()
         new_body.speed(0)
         new_body.shape("square")
-        new_body.color("Azure")
+        new_body.color("yellow")
         new_body.penup()
-        body.append(new_body)
-        score = score + 10
-        if score > high_score:
-            high_score = score
-    if len(body)>0:
-        for index in range (len(body)-1,0,-1):
-            x = body[index-1].xcor()
-            y = body[index-1].ycor()
-            body[index].goto(x,y)
+        body1.append(new_body)
+    if head2.distance(food)<15:
+            player2_score=player2_score+food_value
+            move_food
+            new_body=turtle.Turtle()
+            new_body.speed(0)
+            new_body.shape("square")
+            new_body.color("cyan")
+            new_body.penup()
+            body2.append(new_body)
+    if len(body1)>0:
+        for index in range (len(body1)-1,0,-1):
+            x = body1[index-1].xcor()
+            y = body1[index-1].ycor()
+            body1[index].goto(x,y)
         x = head1.xcor()
         y = head1.ycor()
-        body[0].goto(x,y)
+        body1[0].goto(x,y)
+    if len(body2)>0:
+        for index in range (len(body2)-1,0,-1):
+            x = body2[index-1].xcor()
+            y = body2[index-1].ycor()
+            body2[index].goto(x,y)
+        x = head2.xcor()
+        y = head2.ycor()
+        body2[0].goto(x,y)
     if (head1.xcor() > 240 
     or head1.xcor() < -240 
     or head1.ycor() > 240 
@@ -154,26 +166,38 @@ while True:
         time.sleep(1)
         head1.goto(0,0)
         head1.direction = "stop"
-        for item in body:
+        for item in body1:
             item.goto(1000,1000)
-        body = []
+        body1 = []
         score = 0
-    for item in body[2:]:
+    for item in body1[2:]:
         if item.distance(head1) <15:
             time.sleep(1)
             head1.goto(0,0)
             head1.direction = "stop"
-            for item in body:
+            for item in body1:
                 item.goto(1000,1000)
-            body = []
+            body1 = []
             score = 0
+    def reset_player1():
+        global body1,player1_score
+        head1.goto(-100,100)
+        head1.direction="stop"
+        for item in body1:
+            item.goto(1000,1000)
+        body1=[]
+        player1_score=0
+    def reset_player2():
+            global body2,player2_score
+            head2.goto(-100,100)
+            head2.direction="stop"
+            for item in body2:
+                item.goto(1000,1000)
+            body2=[]
+            player2_score=0
     pen.clear()
     pen.write("score: {}    High Score: {}".format(score,high_score),align="center", font=("Consolas",20,"normal"))    
     
     move()
     move_head2()
     time.sleep(delay)
-
-
-
-
