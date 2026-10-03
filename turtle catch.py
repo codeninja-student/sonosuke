@@ -13,6 +13,23 @@ f.color("red")
 f.goto(0,150)
 f.seth(-90)
 speed = 0
+lives = 3
+tlife = turtle.Turtle()
+tlife.shape("circle")
+tlife.color("red")
+tlife.pu()
+tlife.ht()
+tlife.goto(-150,130)
+for i in range(3):
+    tlife.stamp()
+    tlife.fd(25)
+scoreturt = turtle.Turtle()
+score = 0
+scoreturt.ht()
+scoreturt.pu()
+scoreturt.goto(0,120)
+scoreturt.clear()
+scoreturt.write("Score: 0", align="center", font=('arial',11,'normal'))  
 def go_left():
     t.seth(180)
     global speed
@@ -36,7 +53,9 @@ while True:
     if f.distance(t) < 20:
         f.setx(random.randint(-180,180))
         f.sety(150)
-
+        score += 1
+        scoreturt.clear()
+        scoreturt.write("Score:" + str(score), align="center", font=('Arial',11,"normal"))
     if t.xcor() < -200:
         speed = 0
         t.setx(-200)
@@ -46,7 +65,17 @@ while True:
         t.setx(200)
     else:
         t.fd(speed)
-    
+    if f.ycor() < -150:
+        lives -= 1
+        tlife.clearstamps()
+        tlife.goto(-180,130)
+        for i in range(lives):
+            tlife.stamp()
+            tlife.fd(25)
+        if lives > 0:
+            f.goto(random.randint(-180,180),150)
+        else:
+            f.ht()
     screen.update()
     time.sleep(0.0166)
 
